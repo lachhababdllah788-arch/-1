@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الامتحانات المغربية - المنصة الرسمية للامتحانات الجهوية والوطنية</title>
+    <meta name="description" content="أكبر منصة للامتحانات المغربية مع التصحيح - الثالثة إعدادي، الأولى بكالوريا، الثانية بكالوريا - تحميل مباشر PDF">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Traditional Arabic', Arial, sans-serif;
+            background: #f0f2f5;
+            direction: rtl;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+        }
+
+        .header h1 span {
+            color: #ffd700;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .levels-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        .level-card {
+            min-width: 250px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .level-card.active {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(42,82,152,0.3);
+        }
+
+        .level-header {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .level-header h3 {
+            font-size: 1.3em;
+        }
+
+        .level-stats {
+            padding: 15px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .subjects-container {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .subjects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .subjects-header h2 {
+            color: #2a5298;
+        }
+
+        .add-subject-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .subject-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .subject-card:hover {
+            border-color: #2a5298;
+        }
+
+        .subject-title {
+            background: #2a5298;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject-title h3 {
+            font-size: 1.2em;
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-subject, .delete-subject {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-subject:hover {
+            background: #e74c3c;
+        }
+
+        .exams-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .exams-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .exams-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn-download {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 2px;
+        }
+
+        .btn-correct {
+            background: #3498db;
+        }
+
+        .btn-add-exam {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            width: calc(100% - 20px);
+        }
+
+        /* قسم التعليقات */
+        .comments-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .comments-title {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #2a5298;
+        }
+
+        .comment-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-right: 3px solid #2a5298;
+        }
+
+        .comment-name {
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .comment-date {
+            font-size: 0.7em;
+            color: #999;
+        }
+
+        .comment-text {
+            margin-top: 5px;
+        }
+
+        .add-comment {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .add-comment input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .add-comment button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 3px solid #2a5298;
+            display: none;
+        }
+
+        .admin-panel h3 {
+            color: #2a5298;
+            margin-bottom: 20px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            background: #e0e0e0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .admin-tab.active {
+            background: #2a5298;
+            color: white;
+        }
+
+        .admin-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .admin-form input, .admin-form select {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .admin-form button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 15px;
+        }
+
+        .contact-section a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            .exams-table {
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header" id="header">
+    <h1>📚 <span>الامتحانات المغربية</span></h1>
+    <p>الامتحانات الجهوية والوطنية مع التصحيح - جميع المستويات والمواد</p>
+    <div class="stats-bar">
+        <div class="stat-item">📚 <span id="totalLevels">0</span> مستوى</div>
+        <div class="stat-item">📖 <span id="totalSubjects">0</span> مادة</div>
+        <div class="stat-item">📄 <span id="totalExams">0</span> امتحان</div>
+        <div class="stat-item">📥 <span id="totalDownloads">0</span> تحميل</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="levels-container" id="levelsContainer"></div>
+
+    <div class="subjects-container">
+        <div class="subjects-header">
+            <h2>📖 اختر مادة لعرض الامتحانات</h2>
+            <button class="add-subject-btn" onclick="showAddSubjectForm()">➕ إضافة مادة جديدة</button>
+        </div>
+        <div id="subjectsGrid" class="subjects-grid"></div>
+    </div>
+
+    <div class="contact-section">
+        <p>📧 للتواصل والاستفسار: <a href="mailto:lachhababdllah788@gmail.com">lachhababdllah788@gmail.com</a></p>
+        <p>📱 واتساب: <a href="https://wa.me/212700257215">0700257215</a></p>
+    </div>
+
+    <div class="admin-panel" id="adminPanel">
+        <h3>🔧 لوحة التحكم الشاملة</h3>
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="add-level">➕ إضافة مستوى</button>
+            <button class="admin-tab" data-tab="add-subject">📖 إضافة مادة</button>
+            <button class="admin-tab" data-tab="manage-levels">📚 إدارة المستويات</button>
+            <button class="admin-tab" data-tab="stats">📊 إحصائيات</button>
+        </div>
+
+        <div id="add-level-tab" class="admin-tab-content">
+            <div class="admin-form">
+                <input type="text" id="newLevelName" placeholder="اسم المستوى (مثال: الثالثة إعدادي)">
+                <input type="text" id="newLevelIcon" placeholder="أيقونة (مثال: 🎓)">
+                <button onclick="addNewLevel()">➕ إضافة المستوى</button>
+            </div>
+        </div>
+
+        <div id="add-subject-tab" class="admin-tab-content" style="display: none;">
+            <div class="admin-form">
+                <select id="subjectLevel"></select>
+                <input type="text" id="newSubjectName" placeholder="اسم المادة (مثال: الرياضيات)">
+                <input type="text" id="newSubjectIcon" placeholder="أيقونة (مثال: 📐)">
+                <button onclick="addNewSubject()">📖 إضافة المادة</button>
+            </div>
+        </div>
+
+        <div id="manage-levels-tab" class="admin-tab-content" style="display: none;">
+            <div id="levelsList"></div>
+        </div>
+
+        <div id="stats-tab" class="admin-tab-content" style="display: none;">
+            <div id="statsContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2025 موقع الامتحانات المغربية - جميع الحقوق محفوظة</p>
+    <p>📧 lachhababdllah788@gmail.com | 📱 0700257215</p>
+    <p style="margin-top: 10px; font-size: 0.8em;">تم إنشاء الموقع لخدمة التلاميذ المغاربة</p>
+</div>
+
+<script>
+    // ========== كلمة المرور ==========
+    const ADMIN_PASSWORD = "0700257215azert";
+
+    function checkAdminAccess(action) {
+        const password = prompt(`🔐 ${action}\nأدخل كلمة المرور للمدير:`);
+        if (password === ADMIN_PASSWORD) {
+            return true;
+        } else {
+            alert("❌ كلمة مرور خاطئة! لا يمكنك القيام بهذا الإجراء.");
+            return false;
+        }
+    }
+
+    // ========== البيانات الأساسية ==========
+    let levelsData = {
+        "3eme": {
+            name: "الثالثة إعدادي",
+            icon: "🎓",
+            subjects: {
+                "الرياضيات": {
+                    icon: "📐",
+                    exams: [
+                        { id: 1, title: "الامتحان الجهوي - جهة الدار البيضاء", year: "يونيو 2024", examLink: "", correctionLink: "", comments: [] },
+                        { id: 2, title: "الامتحان الجهوي - جهة الرباط", year: "يونيو 2024", examLink: "", correctionLink: "", comments: [] }
+                    ]
+                },
+                "اللغة العربية": {
+                    icon: "📖",
+                    exams: [
+                        { id: 3, title: "الامتحان الجهوي - جهة مراكش", year: "يونيو 2024", examLink: "", correctionLink: "", comments: [] }
+                    ]
+                }
+            }
+        },
+        "1bac": {
+            name: "الأولى بكالوريا",
+            icon: "📖",
+            subjects: {
+                "الرياضيات": {
+                    icon: "📐",
+                    exams: [
+                        { id: 4, title: "الامتحان الوطني - مسلك العلوم", year: "2024", examLink: "", correctionLink: "", comments: [] }
+                    ]
+                }
+            }
+        },
+        "2bac": {
+            name: "الثانية بكالوريا",
+            icon: "🏆",
+            subjects: {
+                "الرياضيات": {
+                    icon: "📐",
+                    exams: [
+                        { id: 5, title: "الامتحان الوطني - شعبة العلوم التجريبية", year: "2024", examLink: "", correctionLink: "", comments: [] }
+                    ]
+                }
+            }
+        }
+    };
+
+    let currentLevelId = "3eme";
+    let nextExamId = 6;
+
+    // حفظ تلقائي لكل التغييرات
+    function saveAllData() {
+        localStorage.setItem('levelsData', JSON.stringify(levelsData));
+        localStorage.setItem('nextExamId', nextExamId);
+        updateStats();
+        console.log("✅ تم حفظ جميع البيانات تلقائياً");
+    }
+
+    function loadAllData() {
+        const saved = localStorage.getItem('levelsData');
+        if (saved) {
+            levelsData = JSON.parse(saved);
+        }
+        const savedId = localStorage.getItem('nextExamId');
+        if (savedId) nextExamId = parseInt(savedId);
+        updateStats();
+    }
+
+    function updateStats() {
+        let totalSubjects = 0;
+        let totalExams = 0;
+        Object.values(levelsData).forEach(level => {
+            totalSubjects += Object.keys(level.subjects).length;
+            Object.values(level.subjects).forEach(subject => {
+                totalExams += subject.exams.length;
+            });
+        });
+        document.getElementById('totalLevels').innerText = Object.keys(levelsData).length;
+        document.getElementById('totalSubjects').innerText = totalSubjects;
+        document.getElementById('totalExams').innerText = totalExams;
+        let downloads = localStorage.getItem('totalDownloads') || '0';
+        document.getElementById('totalDownloads').innerText = downloads;
+    }
+
+    // عرض المستويات
+    function renderLevels() {
+        const container = document.getElementById('levelsContainer');
+        container.innerHTML = Object.entries(levelsData).map(([id, level]) => `
+            <div class="level-card ${currentLevelId === id ? 'active' : ''}" onclick="selectLevel('${id}')">
+                <div class="level-header"><h3>${level.icon} ${level.name}</h3></div>
+                <div class="level-stats">📚 ${Object.keys(level.subjects).length} مادة</div>
+            </div>
+        `).join('');
+    }
+
+    function selectLevel(levelId) {
+        currentLevelId = levelId;
+        renderLevels();
+        renderSubjects();
+    }
+
+    // إضافة تعليق
+    function addComment(subjectName, examId, event) {
+        const nameInput = document.getElementById(`comment-name-${examId}`);
+        const textInput = document.getElementById(`comment-text-${examId}`);
+        const name = nameInput?.value.trim() || "زائر";
+        const text = textInput?.value.trim();
+        
+        if (!text) {
+            alert("الرجاء كتابة تعليق");
+            return;
+        }
+        
+        const exam = levelsData[currentLevelId].subjects[subjectName].exams.find(e => e.id === examId);
+        if (exam) {
+            if (!exam.comments) exam.comments = [];
+            exam.comments.push({
+                name: name,
+                text: text,
+                date: new Date().toLocaleString('ar-EG')
+            });
+            saveAllData();
+            renderSubjects();
+        }
+        
+        if (nameInput) nameInput.value = "";
+        if (textInput) textInput.value = "";
+    }
+
+    // عرض المواد والامتحانات
+    function renderSubjects() {
+        const currentLevel = levelsData[currentLevelId];
+        if (!currentLevel) return;
+        
+        const container = document.getElementById('subjectsGrid');
+        container.innerHTML = Object.entries(currentLevel.subjects).map(([subjectName, subject]) => `
+            <div class="subject-card">
+                <div class="subject-title">
+                    <h3>${subject.icon} ${subjectName}</h3>
+                    <div class="subject-actions">
+                        <button class="edit-subject" onclick="editSubject('${subjectName}')">✏️</button>
+                        <button class="delete-subject" onclick="deleteSubject('${subjectName}')">🗑️</button>
+                    </div>
+                </div>
+                <table class="exams-table">
+                    <thead><tr><th>الامتحان</th><th>السنة</th><th>التحميل</th></tr></thead>
+                    <tbody>
+                        ${subject.exams.length === 0 ? `
+                            <tr><td colspan="3" style="text-align:center;">📭 لا توجد امتحانات حالياً</td></tr>
+                        ` : subject.exams.map(exam => `
+                            <tr>
+                                <td>📄 ${exam.title}</td>
+                                <td>${exam.year}</td>
+                                <td>
+                                    <button class="btn-download" onclick="downloadFile('${exam.examLink}', '${exam.title}')">📥 الامتحان</button>
+                                    ${exam.correctionLink ? `<button class="btn-download btn-correct" onclick="downloadFile('${exam.correctionLink}', 'تصحيح ${exam.title}')">📖 التصحيح</button>` : ''}
+                                    <button style="background:#f39c12;color:white;border:none;padding:6px;border-radius:6px;cursor:pointer;" onclick="editExam('${subjectName}', ${exam.id})">✏️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="comments-section">
+                                        <div class="comments-title">💬 التعليقات (${exam.comments?.length || 0})</div>
+                                        ${(exam.comments || []).slice(-5).reverse().map(c => `
+                                            <div class="comment-item">
+                                                <span class="comment-name">${c.name}</span>
+                                                <span class="comment-date"> - ${c.date}</span>
+                                                <div class="comment-text">${c.text}</div>
+                                            </div>
+                                        `).join('')}
+                                        <div class="add-comment">
+                                            <input type="text" id="comment-name-${exam.id}" placeholder="اسمك (اختياري)" style="flex:0.5;">
+                                            <input type="text" id="comment-text-${exam.id}" placeholder="اكتب تعليقك..." style="flex:2;">
+                                            <button onclick="addComment('${subjectName}', ${exam.id}, event)">💬 أضف تعليق</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <button class="btn-add-exam" onclick="showAddExamForm('${subjectName}')">➕ إضافة امتحان جديد</button>
+            </div>
+        `).join('');
+    }
+
+    // دوال الإدارة مع الحفظ التلقائي
+    function showAddExamForm(subjectName) {
+        if (!checkAdminAccess("إضافة امتحان جديد")) return;
+        const title = prompt("أدخل عنوان الامتحان:");
+        if (!title) return;
+        const year = prompt("أدخل السنة:");
+        if (!year) return;
+        const examLink = prompt("أدخل رابط الامتحان (Google Drive):");
+        const hasCorrection = confirm("هل يوجد تصحيح؟");
+        let correctionLink = "";
+        if (hasCorrection) correctionLink = prompt("أدخل رابط التصحيح:");
+        
+        levelsData[currentLevelId].subjects[subjectName].exams.push({
+            id: nextExamId++,
+            title: title,
+            year: year,
+            examLink: examLink || "",
+            correctionLink: correctionLink || "",
+            comments: []
+        });
+        saveAllData();
+        renderSubjects();
+        alert("✅ تم إضافة الامتحان بنجاح!");
+    }
+
+    function editExam(subjectName, examId) {
+        if (!checkAdminAccess("تعديل امتحان")) return;
+        const exam = levelsData[currentLevelId].subjects[subjectName].exams.find(e => e.id === examId);
+        if (!exam) return;
+        const newTitle = prompt("تعديل العنوان:", exam.title);
+        if (newTitle) exam.title = newTitle;
+        const newYear = prompt("تعديل السنة:", exam.year);
+        if (newYear) exam.year = newYear;
+        const newLink = prompt("تعديل رابط الامتحان:", exam.examLink);
+        if (newLink !== null) exam.examLink = newLink;
+        const newCorrLink = prompt("تعديل رابط التصحيح:", exam.correctionLink);
+        if (newCorrLink !== null) exam.correctionLink = newCorrLink;
+        saveAllData();
+        renderSubjects();
+        alert("✅ تم التعديل!");
+    }
+
+    function deleteSubject(subjectName) {
+        if (!checkAdminAccess("حذف مادة")) return;
+        if (confirm(`حذف مادة "${subjectName}" وجميع امتحاناتها؟`)) {
+            delete levelsData[currentLevelId].subjects[subjectName];
+            saveAllData();
+            renderSubjects();
+            alert("✅ تم الحذف!");
+        }
+    }
+
+    function editSubject(subjectName) {
+        if (!checkAdminAccess("تعديل مادة")) return;
+        const newName = prompt("الاسم الجديد:", subjectName);
+        if (newName && newName !== subjectName) {
+            levelsData[currentLevelId].subjects[newName] = levelsData[currentLevelId].subjects[subjectName];
+            delete levelsData[currentLevelId].subjects[subjectName];
+            saveAllData();
+            renderSubjects();
+        }
+    }
+
+    function addNewLevel() {
+        if (!checkAdminAccess("إضافة مستوى")) return;
+        const name = document.getElementById('newLevelName').value;
+        const icon = document.getElementById('newLevelIcon').value || "📚";
+        if (!name) { alert("أدخل اسم المستوى"); return; }
+        const id = name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        if (levelsData[id]) { alert("موجود!"); return; }
+        levelsData[id] = { name: name, icon: icon, subjects: {} };
+        saveAllData();
+        renderLevels();
+        document.getElementById('newLevelName').value = '';
+        document.getElementById('newLevelIcon').value = '';
+        alert("✅ تم الإضافة!");
+    }
+
+    function addNewSubject() {
+        if (!checkAdminAccess("إضافة مادة")) return;
+        const levelId = document.getElementById('subjectLevel').value;
+        const name = document.getElementById('newSubjectName').value;
+        const icon = document.getElementById('newSubjectIcon').value || "📚";
+        if (!name) { alert("أدخل اسم المادة"); return; }
+        if (levelsData[levelId].subjects[name]) { alert("موجودة!"); return; }
+        levelsData[levelId].subjects[name] = { icon: icon, exams: [] };
+        saveAllData();
+        renderSubjects();
+        document.getElementById('newSubjectName').value = '';
+        document.getElementById('newSubjectIcon').value = '';
+        alert("✅ تم الإضافة!");
+    }
+
+    function deleteLevel(levelId) {
+        if (!checkAdminAccess("حذف مستوى")) return;
+        if (confirm("حذف المستوى وجميع محتوياته؟")) {
+            delete levelsData[levelId];
+            if (currentLevelId === levelId) currentLevelId = Object.keys(levelsData)[0] || "";
+            saveAllData();
+            renderLevels();
+            renderSubjects();
+            updateAdminPanel();
+            alert("✅ تم الحذف!");
+        }
+    }
+
+    function downloadFile(link, title) {
+        if (!link) { alert(`⚠️ ${title} غير متوفر حالياً`); return; }
+        let url = link.includes('http') ? link : `https://drive.google.com/uc?export=download&id=${link}`;
+        window.open(url, '_blank');
+        let total = parseInt(localStorage.getItem('totalDownloads') || '0') + 1;
+        localStorage.setItem('totalDownloads', total);
+        document.getElementById('totalDownloads').innerText = total;
+    }
+
+    function showAddSubjectForm() {
+        alert("📖 لإضافة مادة: اضغط 5 مرات على الهيدر ← تبويب 'إضافة مادة'");
+    }
+
+    // لوحة التحكم
+    let clickCount = 0, clickTimer;
+    document.getElementById('header').addEventListener('click', () => {
+        clickCount++;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+        if (clickCount === 5) {
+            if (checkAdminAccess("فتح لوحة التحكم")) {
+                document.getElementById('adminPanel').style.display = 'block';
+                updateAdminPanel();
+                alert('🔓 تم فتح لوحة التحكم');
+            }
+            clickCount = 0;
+        }
+    });
+
+    function updateAdminPanel() {
+        const select = document.getElementById('subjectLevel');
+        select.innerHTML = Object.entries(levelsData).map(([id, l]) => `<option value="${id}">${l.icon} ${l.name}</option>`).join('');
+        document.getElementById('levelsList').innerHTML = Object.entries(levelsData).map(([id, l]) => `
+            <div style="background:#f8f9fa;padding:10px;margin:5px 0;border-radius:8px;display:flex;justify-content:space-between;">
+                <span>${l.icon} ${l.name}</span>
+                <button onclick="deleteLevel('${id}')" style="background:#e74c3c;color:white;border:none;padding:5px 10px;border-radius:5px;">🗑️ حذف</button>
+            </div>
+        `).join('');
+        document.getElementById('statsContent').innerHTML = `
+            <div style="background:#f8f9fa;padding:15px;border-radius:10px;">
+                <p>📥 التحميلات: ${localStorage.getItem('totalDownloads') || '0'}</p>
+                <p>📚 المستويات: ${Object.keys(levelsData).length}</p>
+                <p>📖 المواد: ${document.getElementById('totalSubjects').innerText}</p>
+                <p>📄 الامتحانات: ${document.getElementById('totalExams').innerText}</p>
+            </div>
+        `;
+    }
+
+    // التبويبات
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById(`${tab.dataset.tab}-tab`).style.display = 'block';
+        });
+    });
+
+    // تشغيل الموقع
+    loadAllData();
+    renderLevels();
+    renderSubjects();
+    console.log('🚀 الموقع النهائي جاهز! كلمة المرور: 0700257215azert');
+</script>
+</body>
+</html>
